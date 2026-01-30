@@ -81,18 +81,31 @@ if st.session_state.authenticated and st.session_state.user_data is None:
         st.stop() # Stop execution here so we don't crash later
 
 
-# 4. Custom CSS (From your original draft to get the green button)
+# 4. Custom CSS
 st.markdown("""
     <style>
+    /* Target regular buttons (Generar Conceptos) */
     .stButton > button[kind="primary"] {
-        background-color: #b4bfa5;
-        color: white;
-        border: 2px solid #b4bfa5;
+        background-color: #b4bfa5 !important;
+        color: white !important;
+        border: 2px solid #b4bfa5 !important;
     }
     .stButton > button[kind="primary"]:hover {
-        background-color: #8a9470;
-        color: white;
-        border: 2px solid #8a9470;
+        background-color: #8a9470 !important;
+        color: white !important;
+        border: 2px solid #8a9470 !important;
+    }
+
+    /* Target LINK buttons (The new Stripe button) */
+    .stLinkButton > a[kind="primary"] {
+        background-color: #b4bfa5 !important;
+        color: white !important;
+        border: 2px solid #b4bfa5 !important;
+    }
+    .stLinkButton > a[kind="primary"]:hover {
+        background-color: #8a9470 !important;
+        color: white !important;
+        border: 2px solid #8a9470 !important;
     }
     </style>
 """, unsafe_allow_html=True)
