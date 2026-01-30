@@ -81,9 +81,6 @@ if st.session_state.authenticated and st.session_state.user_data is None:
         st.stop() # Stop execution here so we don't crash later
 
 
-
-
-
 # 4. Custom CSS (From your original draft to get the green button)
 st.markdown("""
     <style>
@@ -107,13 +104,17 @@ if os.path.exists(LOGO_FILE):
 credits_left = st.session_state.user_data['credits_left']
 st.sidebar.metric("Créditos", credits_left)
 
-# We use a standard button. When clicked, we generate the URL 
-# and immediately inject a "Meta Refresh" tag to auto-redirect.
+
 if st.sidebar.button("💳 Añadir 10 Créditos", type="secondary"):
-    checkout_url = create_checkout_session(st.session_state.user_email)
-    if checkout_url:
-        # This HTML hack forces the browser to redirect immediately
-        st.markdown(f'<meta http-equiv="refresh" content="0;url={checkout_url}">', unsafe_allow_html=True)
+    with st.sidebar.status("Conectando con Stripe...", expanded=True) as status:
+        checkout_url = create_checkout_session(st.session_state.user_email)
+        if checkout_url:
+            status.update(label="✅ ¡Listo!", state="complete", expanded=True)
+            # Instead of auto-redirecting (which freezes), show a clear link
+            st.sidebar.link_button("👉 Adquirir ahora en Stripe", checkout_url, type="primary")
+        else:
+            status.update(label="❌ Error", state="error")
+            st.sidebar.error("Revisa los logs para comprobar error.")
 
 st.sidebar.subheader("Llena la información:")
 product = st.sidebar.text_input("Nombre del Producto", placeholder="ej., Herramienta de Analítica SaaS")
